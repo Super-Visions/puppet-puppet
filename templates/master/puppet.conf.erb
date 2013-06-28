@@ -34,5 +34,8 @@
     report = true
     
 [master]
-storeconfigs_backend = puppetdb
-storeconfigs = true
+
+  <% if ! @autosign_file.empty? %>autosign = <%= @autosign_file %><% end %>
+
+  storeconfigs_backend = puppetdb
+  storeconfigs = true

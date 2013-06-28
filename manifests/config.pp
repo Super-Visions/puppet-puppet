@@ -7,6 +7,7 @@ class puppet::config (
   $modulepath    = [ '/etc/puppet/modules' ],
   $server_fqdn   = 'UNDEFINED',
   $report_server = 'UNDEFINED',
+  $autosign_file = '$confdir/autosign.conf',
 ) {
 
   validate_array( $modulepath )
