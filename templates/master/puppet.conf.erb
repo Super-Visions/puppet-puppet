@@ -31,9 +31,11 @@
     localconfig = $vardir/localconfig
     
     # reports
-    report = true,puppetdb
+    report = true
     
 [master]
+
+  reports = store,puppetdb
 
   <% if ! @autosign_file.empty? %>autosign = <%= @autosign_file %><% end %>
 
