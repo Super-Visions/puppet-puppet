@@ -11,7 +11,7 @@
     # The default value is '$confdir/ssl'.
     ssldir = $vardir/ssl
 
-    environment=<%= scope['::environment'] %>
+    environment=<%= @environment %>
 
     <% if @server_fqdn != 'UNDEFINED'%>server=<%= @server_fqdn %><% end %>
     
@@ -30,4 +30,6 @@
 
     # reports
     report = true
+
+    <% if @agent_logdest %>logdest = <%= @agent_logdest %><% end %>
 

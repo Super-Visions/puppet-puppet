@@ -8,6 +8,8 @@ class puppet::config (
   $server_fqdn   = 'UNDEFINED',
   $report_server = 'UNDEFINED',
   $autosign_file = '$confdir/autosign.conf',
+  $agent_logdest = undef,
+  $environment   = $::environment,
 ) {
 
   validate_array( $modulepath )
