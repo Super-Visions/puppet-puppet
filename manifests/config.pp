@@ -3,7 +3,7 @@
 class puppet::config (
   $user          = 'root',
   $group         = 'root',
-  $configdir     = '/etc/puppet',
+  $configdir     = $::puppet_confdir,
   $modulepath    = [ '/etc/puppet/modules' ],
   $server_fqdn   = 'UNDEFINED',
   $report_server = 'UNDEFINED',
