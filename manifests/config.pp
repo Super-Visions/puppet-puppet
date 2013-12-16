@@ -3,7 +3,7 @@
 class puppet::config (
   $user          = 'root',
   $group         = 'root',
-  $configdir     = $::puppet_confdir,
+  $confdir       = $::puppet_confdir,
   $modulepath    = [ '/etc/puppet/modules' ],
   $server_fqdn   = 'UNDEFINED',
   $report_server = 'UNDEFINED',
@@ -16,7 +16,7 @@ class puppet::config (
 
   @file { 'puppet.conf':
     ensure  => present,
-    path    => "${configdir}/puppet.conf",
+    path    => "${confdir}/puppet.conf",
     content => template("puppet/agent/puppet.conf.erb"),
     owner   => $user,
     group   => $group,
