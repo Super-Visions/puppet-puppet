@@ -15,7 +15,7 @@ class puppet::config (
 
   validate_array( $modulepath )
 
-  notify { "confdir:${confdir} - vardir:${vardir}": }
+  #notify { "confdir:${confdir} - vardir:${vardir}": }
 
   @file { 'puppet.conf':
     ensure  => present,
