@@ -35,12 +35,14 @@ class puppet::agent::service (
   $service = 'puppet',
   $ensure  = true,
   $enable = true,
+  $hasstatus = true,
+  $hasrestart = true,
 ) {
   service { $service:
     ensure     => $ensure,
     enable     => $enable,
-    hasstatus  => true,
-    hasrestart => true,
+    hasstatus  => $hasstatus,
+    hasrestart => $hasrestart,
     subscribe  => Class['puppet::config'],
   }
 }
