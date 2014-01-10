@@ -1,5 +1,5 @@
 [main]
-    vardir = <%= @vardir %>
+    <% if @vardir %>vardir = <%= @vardir %><% end %>
     
     # The Puppet log directory.
     # The default value is '$vardir/log'.
@@ -11,7 +11,7 @@
 
     # Where SSL certificates are kept.
     # The default value is '$confdir/ssl'.
-    ssldir = $vardir/ssl
+    ssldir = <% if @ssldir %><%= @ssldir %><% else %>$vardir/ssl<% end %>
 
     environment=<%= @environment %>
 
