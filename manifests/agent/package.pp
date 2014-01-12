@@ -30,11 +30,13 @@
 # Copyright 2012 Super-Visions, unless otherwise noted.
 #
 class puppet::agent::package (
+  $manage  = true,
   $package = 'puppet',
   $ensure = 'installed',
 ) {
-
-  package { $package:
-    ensure => $ensure,
+  if $manage {
+    package { $package:
+      ensure => $ensure,
+    }
   }
 }
