@@ -3,6 +3,7 @@
 class puppet::config (
   $user          = 'root',
   $group         = 'root',
+  $mode          = '0644',
   $confdir       = $::puppet_confdir,
   $modulepath    = [ '/etc/puppet/modules' ],
   $server_fqdn   = undef,
@@ -25,10 +26,10 @@ class puppet::config (
   file { 'puppet.conf':
     ensure  => present,
     path    => "${confdir}/puppet.conf",
+    mode    => $mode,
   #  content => template("puppet/agent/puppet.conf.erb"),
   #  owner   => $user,
   #  group   => $group,
-    mode    => '0644',
   }
 
 
