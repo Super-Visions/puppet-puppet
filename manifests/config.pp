@@ -10,12 +10,13 @@ class puppet::config (
   $autosign_file = '$confdir/autosign.conf',
   $agent_logdest = undef,
   $environment   = $::environment,
-  $ssldir        = undef,
-  $vardir        = undef,
+  $ssldir        = '$vardir/ssl',
+  $vardir        = 'default',
   $logdir        = '/var/log/puppet',
   $rundir        = '/var/run/puppet',
   $classfile     = '$vardir/classes.txt',
   $localconfig   = '$vardir/localconfig',
+  $report        = 'true',
   $reports       = 'store',
 ) {
 
@@ -23,7 +24,7 @@ class puppet::config (
 
   #notify { "confdir:${confdir} - vardir:${vardir}": }
 
-  file { 'puppet.conf':
+  @file { 'puppet.conf':
     ensure  => present,
     path    => "${confdir}/puppet.conf",
     mode    => $mode,

@@ -5,7 +5,7 @@ class puppet::master::config inherits puppet::config
   #  content => template("puppet/master/puppet.conf.erb"),
   #}
 
-  #realize File['puppet.conf']
+  realize File['puppet.conf']
 
   if $puppet::config::server_fqdn == 'default' {
     $server_fqdn_action = 'rm'
@@ -43,33 +43,29 @@ class puppet::master::config inherits puppet::config
     notify  => Class['puppet::master::service'],
   } 
 
-  if $puppet::config::vardir {
-    if $puppet::config::vardir == 'default' {
-      $vardir_action = 'rm'
-    } else {
-      $vardir_action = 'set'
-    }
-    augeas {'master.puppet.conf.main.vardir':
-      context => "/files${puppet::config::confdir}/puppet.conf/main",
-      changes => [ "${rundir_action} vardir ${puppet::config::vardir}", ],
-      require => File['puppet.conf'],
-      notify  => Class['puppet::master::service'],
-    } 
+  if $puppet::config::vardir == 'default' {
+    $vardir_action = 'rm'
+  } else {
+    $vardir_action = 'set'
   }
+  augeas {'master.puppet.conf.main.vardir':
+    context => "/files${puppet::config::confdir}/puppet.conf/main",
+    changes => [ "${vardir_action} vardir ${puppet::config::vardir}", ],
+    require => File['puppet.conf'],
+    notify  => Class['puppet::master::service'],
+  } 
 
-  if $puppet::config::ssldir {
-    if $puppet::config::ssldir == 'default' {
-      $ssldir_action = 'rm'
-    } else {
-      $ssldir_action = 'set'
-    }
-    augeas {'master.puppet.conf.main.ssldir':
-      context => "/files${puppet::config::confdir}/puppet.conf/main",
-      changes => [ "${ssldir_action} ssldir ${puppet::config::ssldir}", ],
-      require => File['puppet.conf'],
-      notify  => Class['puppet::master::service'],
-    } 
+  if $puppet::config::ssldir == 'default' {
+    $ssldir_action = 'rm'
+  } else {
+    $ssldir_action = 'set'
   }
+  augeas {'master.puppet.conf.main.ssldir':
+    context => "/files${puppet::config::confdir}/puppet.conf/main",
+    changes => [ "${ssldir_action} ssldir ${puppet::config::ssldir}", ],
+    require => File['puppet.conf'],
+    notify  => Class['puppet::master::service'],
+  } 
 
   if $puppet::config::rundir == 'default' {
     $rundir_action = 'rm'

@@ -1,21 +1,23 @@
 [main]
-    <% if @vardir %>vardir = <%= @vardir %><% end %>
+    <% if @vardir != 'default' %>vardir = <%= @vardir %><% end %>
     
     # The Puppet log directory.
     # The default value is '$vardir/log'.
-    logdir = /var/log/puppet
+    #logdir = /var/log/puppet
+    <% if @logdir != 'default' %>logdir = <%= @logdir %><% end %>
 
     # Where Puppet PID files are kept.
     # The default value is '$vardir/run'.
-    rundir = /var/run/puppet
+    #rundir = /var/run/puppet
+    <% if @rundir != 'default' %>rundir = <%= @rundir %><% end %>
 
     # Where SSL certificates are kept.
     # The default value is '$confdir/ssl'.
-    ssldir = <% if @ssldir %><%= @ssldir %><% else %>$vardir/ssl<% end %>
+    <% if @ssldir != 'default' %>ssldir = <%= @ssldir %><% end %>
 
     environment=<%= @environment %>
 
-    <% if @server_fqdn != 'UNDEFINED'%>server=<%= @server_fqdn %><% end %>
+    <% if @server_fqdn %>server = <%= @server_fqdn %><% end %>
     
 [agent]
     # The file in which puppetd stores a list of the classes
@@ -23,15 +25,13 @@
     # the separate ``puppet`` executable using the ``--loadclasses``
     # option.
     # The default value is '$confdir/classes.txt'.
-    classfile = $vardir/classes.txt
+    <% if @classfile != 'default' %>classfile = <%= @classfile %><% end %>
 
     # Where puppetd caches the local configuration.  An
     # extension indicating the cache format is added automatically.
     # The default value is '$confdir/localconfig'.
-    localconfig = $vardir/localconfig
+    <% if @localconfig != 'default' %>localconfig = <%= @localconfig %><% end %>
 
     # reports
-    report = true
-
-    <% if @agent_logdest %>logdest = <%= @agent_logdest %><% end %>
+    <% if @report != 'default' %>report = <%= @report %><% end %>
 
