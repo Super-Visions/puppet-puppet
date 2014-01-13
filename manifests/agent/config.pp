@@ -61,7 +61,7 @@ class puppet::agent::config inherits puppet::config
     }
     augeas {'agent.puppet.conf.main.ssldir':
       context => "/files${puppet::config::confdir}/puppet.conf/main",
-      changes => [ "${rundir_action} ssldir ${puppet::config::ssldir}", ],
+      changes => [ "${ssldir_action} ssldir ${puppet::config::ssldir}", ],
       require => File['puppet.conf'],
       notify  => Class['puppet::agent::service'],
     } 
