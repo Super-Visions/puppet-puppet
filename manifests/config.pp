@@ -26,8 +26,8 @@ class puppet::config (
     ensure  => present,
     path    => "${confdir}/puppet.conf",
   #  content => template("puppet/agent/puppet.conf.erb"),
-    owner   => $user,
-    group   => $group,
+  #  owner   => $user,
+  #  group   => $group,
     mode    => '0644',
   }
 
