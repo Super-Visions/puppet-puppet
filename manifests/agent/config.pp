@@ -6,7 +6,7 @@ class puppet::agent::config inherits puppet::config
   if $osfamily == 'windows' {
     
     File['puppet.conf'] {
-      content => template("puppet/agent/puppet.conf.erb"),
+      content => template("puppet/agent/puppet.conf.windows.erb"),
     }
 
     realize File['puppet.conf']
