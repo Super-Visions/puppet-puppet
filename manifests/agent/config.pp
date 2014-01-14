@@ -11,6 +11,13 @@ class puppet::agent::config inherits puppet::config
 
     realize File['puppet.conf']
 
+  } elsif $osfamily == 'AIX' { 
+    File['puppet.conf'] {
+      content => template("puppet/agent/puppet.conf.windows.erb"),
+    }
+
+    realize File['puppet.conf']
+  
   } else {
 
     realize File['puppet.conf']
