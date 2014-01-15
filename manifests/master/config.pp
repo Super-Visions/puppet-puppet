@@ -121,4 +121,15 @@ class puppet::master::config inherits puppet::config
     notify  => Class['puppet::master::service'],
   } 
 
+  if $puppet::config::parser == 'default' {
+    $parser_action = 'rm'
+  } else {
+    $parser_action = 'set'
+  }
+  augeas {'master.puppet.conf.main.parser':
+    context => "/files${puppet::config::confdir}/puppet.conf/main",
+    changes => [ "${parser_action} parser ${puppet::config::parser}", ],
+    require => File['puppet.conf'],
+    notify  => Class['puppet::master::service'],
+  } 
 }

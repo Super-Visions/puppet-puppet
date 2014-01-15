@@ -18,6 +18,7 @@ class puppet::config (
   $localconfig   = '$vardir/localconfig',
   $report        = 'true',
   $reports       = 'store',
+  $parser        = 'default',
 ) {
 
   #validate_array( $modulepath )
