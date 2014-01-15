@@ -32,17 +32,27 @@
 # Copyright 2012 Super-Visions, unless otherwise noted.
 #
 class puppet::agent::service (
-  $service = 'puppet',
-  $ensure  = true,
-  $enable = true,
-  $hasstatus = true,
+  $service    = 'puppet',
+  $ensure     = true,
+  $enable     = true,
+  $hasstatus  = true,
   $hasrestart = true,
+  $path       = undef,
+  $restart    = undef,
+  $start      = undef,
+  $status     = undef,
+  $stop       = undef,
 ) {
   service { $service:
     ensure     => $ensure,
     enable     => $enable,
     hasstatus  => $hasstatus,
     hasrestart => $hasrestart,
+    path       => $path,
+    restart    => $restart,
+    start      => $start,
+    status     => $status,
+    stop       => $stop,
     subscribe  => Class['puppet::config'],
   }
 }
