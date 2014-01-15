@@ -35,6 +35,7 @@ class puppet::agent::service (
   $service    = 'puppet',
   $ensure     = true,
   $enable     = true,
+  $provider   = undef,
   $hasstatus  = true,
   $hasrestart = true,
   $path       = undef,
@@ -46,6 +47,7 @@ class puppet::agent::service (
   service { $service:
     ensure     => $ensure,
     enable     => $enable,
+    provider   => $provider,
     hasstatus  => $hasstatus,
     hasrestart => $hasrestart,
     path       => $path,
