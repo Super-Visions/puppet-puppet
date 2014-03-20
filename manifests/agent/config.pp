@@ -70,17 +70,19 @@ class puppet::agent::config inherits puppet::config
       notify  => Class['puppet::agent::service'],
     } 
 
-    if $puppet::config::ssldir == 'default' {
-      $ssldir_action = 'rm'
-    } else {
-      $ssldir_action = 'set'
+    if $puppet::config::real_ssldir {
+      if $puppet::config::real_ssldir == 'default' {
+        $ssldir_action = 'rm'
+      } else {
+        $ssldir_action = 'set'
+      }
+      augeas {'agent.puppet.conf.main.ssldir':
+        context => "/files${puppet::config::confdir}/puppet.conf/main",
+        changes => [ "${ssldir_action} ssldir ${puppet::config::real_ssldir}", ],
+        require => File['puppet.conf'],
+        notify  => Class['puppet::agent::service'],
+      }
     }
-    augeas {'agent.puppet.conf.main.ssldir':
-      context => "/files${puppet::config::confdir}/puppet.conf/main",
-      changes => [ "${ssldir_action} ssldir ${puppet::config::real_ssldir}", ],
-      require => File['puppet.conf'],
-      notify  => Class['puppet::agent::service'],
-    } 
 
     if $puppet::config::rundir == 'default' {
       $rundir_action = 'rm'

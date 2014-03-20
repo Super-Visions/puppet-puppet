@@ -1,11 +1,13 @@
 require 'puppet'
 require 'fileutils'
-require 'digest/md5'
 
 class FixSsldir
   attr_accessor :new_ssldir
 
   def initialize
+    @wanted_ssldir = 'ssl'
+    @pup_user   = Puppet[:user]
+    @pup_group  = Puppet[:group]
     @pup_vardir = Puppet[:vardir]
     @set_ssldir = Puppet[:ssldir]
     run
@@ -14,18 +16,10 @@ class FixSsldir
   def run
     # return if the std ssldir is actually the one set & used
     return if isStdSsldirSet 
-    # if std ssl dir does not exist, create by copy
-    if ! findStdSsldir
-      # copy existing to std
-      copy
-    else
-      # if the stdssldir exists, compare the certificates
-      if diffSslDirs
-        # copy existing to std
-        copy
-      end
-    end
-    @new_ssldir = '$vardir/ssl'
+    # if std ssl dir is not set, create copy of current by force
+    copy
+    # Windows puppet config uses '/' as path separator
+    @new_ssldir = '$vardir/' + @wanted_ssldir
   end
 
   private
@@ -33,12 +27,12 @@ class FixSsldir
   def copy
     FileUtils.rm_rf stdSsldir
     FileUtils.cp_r @set_ssldir, stdSsldir
-    FileUtils.chown_R 'puppet', 'puppet', stdSsldir
-    FileUtils.chown 'puppet', 'root', stdSsldir
+    FileUtils.chown_R @pup_user, @pup_group, stdSsldir
+    FileUtils.chown @pup_user, @pup_group, stdSsldir
   end
 
   def stdSsldir
-    "#{@pup_vardir}#{File::SEPARATOR}ssl"
+    @pup_vardir + File::SEPARATOR + @wanted_ssldir
   end
 
   def findStdSsldir
@@ -55,16 +49,6 @@ class FixSsldir
 
   def certFileName
     Puppet[:certname] + '.pem'
-  end
-
-  # Calculate the md5 sum for current and std ssl cert
-  # Return wether they are equal
-  def diffSslDirs
-    where = 'certs'
-    where = 'private_keys'
-    set_md5_sum = Digest::MD5.hexdigest( File.read( @set_ssldir + File::SEPARATOR + where + File::SEPARATOR + certFileName ) )
-    std_md5_sum = Digest::MD5.hexdigest( File.read(  stdSsldir  + File::SEPARATOR + where + File::SEPARATOR + certFileName ) )
-    set_md5_sum != std_md5_sum
   end
 end
 
