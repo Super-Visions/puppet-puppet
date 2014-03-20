@@ -27,8 +27,10 @@ class FixSsldir
   def copy
     FileUtils.rm_rf stdSsldir
     FileUtils.cp_r @set_ssldir, stdSsldir
-    FileUtils.chown_R @pup_user, @pup_group, stdSsldir
-    FileUtils.chown @pup_user, @pup_group, stdSsldir
+    if Facter.value('kernel') != 'windows'
+      FileUtils.chown_R @pup_user, @pup_group, stdSsldir
+      FileUtils.chown @pup_user, @pup_group, stdSsldir
+    end
   end
 
   def stdSsldir
