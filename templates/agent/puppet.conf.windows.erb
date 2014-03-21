@@ -13,7 +13,7 @@
 
     # Where SSL certificates are kept.
     # The default value is '$confdir/ssl'.
-    <% if @real_ssldir != '' %>
+    <% if @real_ssldir.to_s.empty? %>
     <% if @real_ssldir != 'default' %>ssldir = <%= @real_ssldir %><% end %>
     <% end %>
 
