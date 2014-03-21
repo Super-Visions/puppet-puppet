@@ -10,7 +10,9 @@ class FixSsldir
     @pup_group  = Puppet[:group]
     @pup_vardir = Puppet[:vardir]
     @set_ssldir = Puppet[:ssldir]
-    run
+    
+
+    #run
   end
 
   def run
