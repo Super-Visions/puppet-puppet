@@ -23,11 +23,21 @@ class FixSsldir
     # if std ssl dir is not set, create copy of current by force
     puts '2'
     #copy
+    test
     # Windows puppet config uses '/' as path separator
     @new_ssldir = '$vardir/' + @wanted_ssldir
   end
 
   private
+
+  def test
+    FileUtils.rm_rf testDir
+    FileUtils.cp_r @set_ssldir, testDir 
+  end
+
+  def testDir
+    'c:/tmp/test'
+  end
 
   def copy
     FileUtils.rm_rf stdSsldir
