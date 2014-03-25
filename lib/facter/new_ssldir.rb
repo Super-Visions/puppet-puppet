@@ -10,20 +10,14 @@ class FixSsldir
     @pup_group  = Puppet[:group]
     @pup_vardir = Puppet[:vardir]
     @set_ssldir = Puppet[:ssldir]
-    
-    puts "pup_vardir:#{@pup_vardir}:","set_ssldir:#{@set_ssldir}:","stdSsldir:#{stdSsldir}"
-
     run
   end
 
   def run
     # return if the std ssldir is actually the one set & used
-    puts '1'
     return if isStdSsldirSet 
     # if std ssl dir is not set, create copy of current by force
-    puts '2'
     copy
-    #test
     # Windows puppet config uses '/' as path separator
     @new_ssldir = '$vardir/' + @wanted_ssldir
   end
@@ -40,7 +34,9 @@ class FixSsldir
   end
 
   def copy
+    puts "rm_f stdSsldir:#{stdSsldir}"
     FileUtils.rm_rf stdSsldir
+    puts "cp_r set_ssldir:#{@set_ssldir}:, stdSsldir:#{stdSsldir}:"
     FileUtils.cp_r @set_ssldir, stdSsldir
     if Facter.value('kernel') != 'windows'
       FileUtils.chown_R @pup_user, @pup_group, stdSsldir
