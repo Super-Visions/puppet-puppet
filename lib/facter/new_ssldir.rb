@@ -11,7 +11,7 @@ class FixSsldir
     @pup_vardir = Puppet[:vardir]
     @set_ssldir = Puppet[:ssldir]
     
-    puts  " pup_vardir:#{@pup_vardir}: set_ssldir:#{@set_ssldir}: "
+    puts "pup_vardir:#{@pup_vardir}:","set_ssldir:#{@set_ssldir}:","stdSsldir:#{stdSsldir}"
 
     run
   end
