@@ -24,15 +24,6 @@ class FixSsldir
 
   private
 
-  def test
-    FileUtils.rm_rf testDir
-    FileUtils.cp_r @set_ssldir, testDir 
-  end
-
-  def testDir
-    'c:/tmp/test'
-  end
-
   def copy
     puts "rm_f stdSsldir:#{stdSsldir}"
     FileUtils.rm_rf stdSsldir

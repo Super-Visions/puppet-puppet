@@ -29,7 +29,7 @@ class puppet::config (
   } else {
     $real_ssldir = $ssldir
   }
-  notify { "\nssldir:${ssldir}\npuppet_ssldir:${::puppet_ssldir}\nnew_ssldir:${::new_ssldir}\nreal_ssldir:${real_ssldir}\n": }
+  #notify { "\nssldir:${ssldir}\npuppet_ssldir:${::puppet_ssldir}\nnew_ssldir:${::new_ssldir}\nreal_ssldir:${real_ssldir}\n": }
   #
   # if the code above is ever removed, uncomment the next line (var used in augeas and templates)
   # $real_ssldir = $ssldir
