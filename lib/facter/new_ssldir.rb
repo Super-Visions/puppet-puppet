@@ -25,14 +25,13 @@ class FixSsldir
   private
 
   def copy
-    puts "rm_f stdSsldir:#{stdSsldir}"
     FileUtils.rm_rf stdSsldir
-    puts "cp_r set_ssldir:#{@set_ssldir}:, stdSsldir:#{stdSsldir}:"
     FileUtils.cp_r @set_ssldir, stdSsldir
-    if Facter.value('kernel') != 'windows'
-      FileUtils.chown_R @pup_user, @pup_group, stdSsldir
-      FileUtils.chown @pup_user, @pup_group, stdSsldir
-    end
+    # all this causes problems on Windows and AIX
+    #if Facter.value('kernel') != 'windows'
+    #  FileUtils.chown_R @pup_user, @pup_group, stdSsldir
+    #  FileUtils.chown @pup_user, @pup_group, stdSsldir
+    #end
   end
 
   def stdSsldir
