@@ -13,7 +13,7 @@ class FixSsldir
     
     puts  " pup_vardir:#{@pup_vardir}: set_ssldir:#{@set_ssldir}: "
 
-    #run
+    run
   end
 
   def run
