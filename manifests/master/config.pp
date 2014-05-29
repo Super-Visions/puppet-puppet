@@ -17,7 +17,19 @@ class puppet::master::config inherits puppet::config
     changes => [ "${server_fqdn_action} server ${puppet::config::server_fqdn}", ],
     require => File['puppet.conf'],
     notify  => Class['puppet::master::service'],
-  } 
+  }
+
+  if $puppet::config::environmentpath == 'absent' {
+    $server_environmentpath_action = 'rm'
+  } else {
+    $server_environmentpath_action = 'set'
+  }
+  augeas {'master.puppet.conf.main.server':
+    context => "/files${puppet::config::confdir}/puppet.conf/main",
+    changes => [ "${server_environmentpath_action} environmentpath ${puppet::config::environmentpath}", ],
+    require => File['puppet.conf'],
+    notify  => Class['puppet::master::service'],
+  }
 
   if $puppet::config::environment == 'default' {
     $environment_action = 'rm'
@@ -29,7 +41,7 @@ class puppet::master::config inherits puppet::config
     changes => [ "$environment_action environment ${puppet::config::environment}", ],
     require => File['puppet.conf'],
     notify  => Class['puppet::master::service'],
-  } 
+  }
 
   if $puppet::config::logdir == 'default' {
     $logdir_action = 'rm'
@@ -41,7 +53,7 @@ class puppet::master::config inherits puppet::config
     changes => [ "${logdir_action} logdir ${puppet::config::logdir}", ],
     require => File['puppet.conf'],
     notify  => Class['puppet::master::service'],
-  } 
+  }
 
   if $puppet::config::vardir == 'default' {
     $vardir_action = 'rm'
@@ -53,7 +65,7 @@ class puppet::master::config inherits puppet::config
     changes => [ "${vardir_action} vardir ${puppet::config::vardir}", ],
     require => File['puppet.conf'],
     notify  => Class['puppet::master::service'],
-  } 
+  }
 
   if $puppet::config::ssldir == 'default' {
     $ssldir_action = 'rm'
@@ -65,7 +77,7 @@ class puppet::master::config inherits puppet::config
     changes => [ "${ssldir_action} ssldir ${puppet::config::ssldir}", ],
     require => File['puppet.conf'],
     notify  => Class['puppet::master::service'],
-  } 
+  }
 
   if $puppet::config::rundir == 'default' {
     $rundir_action = 'rm'
@@ -77,7 +89,7 @@ class puppet::master::config inherits puppet::config
     changes => [ "${rundir_action} rundir ${puppet::config::rundir}", ],
     require => File['puppet.conf'],
     notify  => Class['puppet::master::service'],
-  } 
+  }
 
   if $puppet::config::modulepath {
     if $puppet::config::modulepath == 'default' {
@@ -92,9 +104,9 @@ class puppet::master::config inherits puppet::config
       changes => [ "${modulepath_action} modulepath ${modulepath}", ],
       require => File['puppet.conf'],
       notify  => Class['puppet::master::service'],
-    } 
+    }
   }
-  
+
   if $puppet::config::autosign_file {
     if $puppet::config::autosign_file == 'default' {
       $autosign_file_action = 'rm'
@@ -106,7 +118,7 @@ class puppet::master::config inherits puppet::config
       changes => [ "${rundir_action} autosign ${puppet::config::autosign_file}", ],
       require => File['puppet.conf'],
       notify  => Class['puppet::master::service'],
-    } 
+    }
   }
 
   if $puppet::config::reports == 'default' {
@@ -119,7 +131,7 @@ class puppet::master::config inherits puppet::config
     changes => [ "${rundir_action} reports ${puppet::config::reports}", ],
     require => File['puppet.conf'],
     notify  => Class['puppet::master::service'],
-  } 
+  }
 
   if $puppet::config::parser == 'default' {
     $parser_action = 'rm'
@@ -131,5 +143,5 @@ class puppet::master::config inherits puppet::config
     changes => [ "${parser_action} parser ${puppet::config::parser}", ],
     require => File['puppet.conf'],
     notify  => Class['puppet::master::service'],
-  } 
+  }
 }
