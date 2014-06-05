@@ -19,16 +19,18 @@ class puppet::master::config inherits puppet::config
     notify  => Class['puppet::master::service'],
   }
 
-  if $puppet::config::environmentpath == 'absent' {
-    $server_environmentpath_action = 'rm'
-  } else {
-    $server_environmentpath_action = 'set'
-  }
-  augeas {'master.puppet.conf.main.server':
-    context => "/files${puppet::config::confdir}/puppet.conf/main",
-    changes => [ "${server_environmentpath_action} environmentpath ${puppet::config::environmentpath}", ],
-    require => File['puppet.conf'],
-    notify  => Class['puppet::master::service'],
+  if $puppet::config::environmentpath {
+    if $puppet::config::environmentpath == 'absent' {
+      $server_environmentpath_action = 'rm'
+    } else {
+      $server_environmentpath_action = 'set'
+    }
+    augeas {'master.puppet.conf.main.environmentpath':
+      context => "/files${puppet::config::confdir}/puppet.conf/main",
+      changes => [ "${server_environmentpath_action} environmentpath ${puppet::config::environmentpath}", ],
+      require => File['puppet.conf'],
+      notify  => Class['puppet::master::service'],
+    }
   }
 
   if $puppet::config::environment == 'default' {
