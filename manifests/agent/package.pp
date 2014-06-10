@@ -53,7 +53,7 @@ class puppet::agent::package (
         }
         $provider = undef
         $require = Pget['DownloadPuppet']
-        $source  = "${tmp_dir}/${remote_file}"
+        $source  = "${tmp_dir}\\${remote_file}"
         $install_options = ['/qn']
       } else {
         file{ '/var/cache/wget':
