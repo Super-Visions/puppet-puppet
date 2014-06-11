@@ -51,7 +51,7 @@ class puppet::agent::package (
           target  => $tmp_dir,
           require => File[$tmp_dir]
         }
-        $provider = 'windows'
+        $provider = undef
         $require = Pget['DownloadPuppet']
         $source  = "${tmp_dir}\\${remote_file}"
         $install_options = ['/qn']
