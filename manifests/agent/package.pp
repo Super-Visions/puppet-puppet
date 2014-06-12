@@ -36,6 +36,8 @@ class puppet::agent::package (
   $tmp_dir     = undef,
   $remote_url  = undef,
   $remote_file = undef,
+  $source      = undef,
+  $provider    = undef,
 ) {
   if $manage {
 
@@ -51,10 +53,7 @@ class puppet::agent::package (
           target  => $tmp_dir,
           require => File[$tmp_dir]
         }
-        $provider = undef
         $require = Pget['DownloadPuppet']
-        $source  = "${tmp_dir}\\${remote_file}"
-        $install_options = ['/qn']
       } else {
         file{ '/var/cache/wget':
           ensure  => directory,
@@ -65,15 +64,15 @@ class puppet::agent::package (
           cache_dir   => '/var/cache/wget',
           require     => [File[$tmp_dir],File['/var/cache/wget']],
         }
-        $provider = 'rpm'
         $require = Wget::Fetch["${remote_url}/${remote_file}"]
-        $source  = "${tmp_dir}/${remote_file}"
-        $install_options = undef
       }
     } else {
-      $provider = undef
       $require  = undef
-      $source   = undef
+    }
+
+    if $::kernel == 'windows' {
+      $install_options = ['/qn']
+    } else {
       $install_options = undef
     }
 
