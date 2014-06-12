@@ -38,8 +38,28 @@ class puppet::agent::package (
   $remote_file = undef,
   $source      = undef,
   $provider    = undef,
+  $checkver    = false,
+  $ensurever   = undef,
 ) {
-  if $manage {
+
+  if $checkver {
+    if ! $ensurever {
+      fail( 'Puppet agent version checking requested (checkver => true) but no "ensurever" (required version) param provided' )
+    }
+    if versioncmp( $::puppetversion, $ensurever ) >= 0 {
+      $update = false
+      #notify { "1 - update = false : '${::puppetversion}', '${ensurever}'": }
+    } else {
+      $update = true
+      #notify { "2 - update = true : '${::puppetversion}', '${ensurever}'": }
+    }
+  } else {
+    $update = true
+    #notify { "3 - no check : '${::puppetversion}', '${ensurever}'": }
+  }
+
+
+  if $manage and $update {
 
     if $remote_file {
       file{ $tmp_dir:

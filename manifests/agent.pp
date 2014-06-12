@@ -28,9 +28,12 @@
 class puppet::agent
 {
   anchor { 'puppet::agent::start': }->
-  class { 'puppet::agent::package': }->
+  #class { 'puppet::agent::package': }->
   class { 'puppet::agent::cron': }->
   class { 'puppet::agent::config': }->
   class { 'puppet::agent::service': }->
   anchor { 'puppet::agent::end': }
+
+  stage { 'puppetupgrade': require => Stage['main'] }
+  class { 'puppet::agent::package': stage => 'puppetupgrade' }
 }
