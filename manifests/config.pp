@@ -21,6 +21,8 @@ class puppet::config (
   $parser              = 'default',
   $use_new_ssldir_fact = false,
   $environmentpath     = undef,
+  $log_level           = 'default',
+  $runinterval         = 'default',
 ) {
 
   # Code for fixing ssldir

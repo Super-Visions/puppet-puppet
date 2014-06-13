@@ -1,6 +1,6 @@
 [main]
     <% if @vardir != 'default' %>vardir = <%= @vardir %><% end %>
-    
+
     # The Puppet log directory.
     # The default value is '$vardir/log'.
     #logdir = /var/log/puppet
@@ -23,8 +23,12 @@
 
     <% if @server_fqdn %>server = <%= @server_fqdn %><% end %>
 
+    <% if @log_level != 'default' %>log_level = <%= @log_level %><% end %>
+
+    <% if @runinterval != 'default' %>runinterval = <%= @runinterval %><% end %>
+
     pluginsync = true
-    
+
 [agent]
     # The file in which puppetd stores a list of the classes
     # associated with the retrieved configuratiion.  Can be loaded in
@@ -40,5 +44,3 @@
 
     # reports
     <% if @report != 'default' %>report = <%= @report %><% end %>
-    
-

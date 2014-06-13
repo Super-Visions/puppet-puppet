@@ -1,23 +1,23 @@
 
 class puppet::agent::config inherits puppet::config
 {
-  
+
   #if $osfamily == 'RedHat' {
   if $osfamily == 'windows' {
-    
+
     File['puppet.conf'] {
       content => template("puppet/agent/puppet.conf.windows.erb"),
     }
 
     realize File['puppet.conf']
 
-  } elsif $osfamily == 'AIX' { 
+  } elsif $osfamily == 'AIX' {
     File['puppet.conf'] {
       content => template("puppet/agent/puppet.conf.windows.erb"),
     }
 
     realize File['puppet.conf']
-  
+
   } else {
 
     realize File['puppet.conf']
@@ -32,7 +32,7 @@ class puppet::agent::config inherits puppet::config
       changes => [ "${server_fqdn_action} server ${puppet::config::server_fqdn}", ],
       require => File['puppet.conf'],
       notify  => Class['puppet::agent::service'],
-    } 
+    }
 
     if $puppet::config::environment == 'default' {
       $environment_action = 'rm'
@@ -44,7 +44,31 @@ class puppet::agent::config inherits puppet::config
       changes => [ "$environment_action environment ${puppet::config::environment}", ],
       require => File['puppet.conf'],
       notify  => Class['puppet::agent::service'],
-    } 
+    }
+
+    if $puppet::config::runinterval == 'default' {
+      $runinterval_action = 'rm'
+    } else {
+      $runinterval_action = 'set'
+    }
+    augeas {'agent.puppet.conf.main.runinterval':
+      context => "/files${puppet::config::confdir}/puppet.conf/main",
+      changes => [ "${runinterval_action} runinterval ${puppet::config::runinterval}", ],
+      require => File['puppet.conf'],
+      notify  => Class['puppet::agent::service'],
+    }
+
+    if $puppet::config::log_level == 'default' {
+      $log_level_action = 'rm'
+    } else {
+      $log_level_action = 'set'
+    }
+    augeas {'agent.puppet.conf.main.log_level':
+      context => "/files${puppet::config::confdir}/puppet.conf/main",
+      changes => [ "${log_level_action} log_level ${puppet::config::log_level}", ],
+      require => File['puppet.conf'],
+      notify  => Class['puppet::agent::service'],
+    }
 
     if $puppet::config::logdir == 'default' {
       $logdir_action = 'rm'
@@ -56,7 +80,7 @@ class puppet::agent::config inherits puppet::config
       changes => [ "${logdir_action} logdir ${puppet::config::logdir}", ],
       require => File['puppet.conf'],
       notify  => Class['puppet::agent::service'],
-    } 
+    }
 
     if $puppet::config::vardir == 'default' {
       $vardir_action = 'rm'
@@ -68,7 +92,7 @@ class puppet::agent::config inherits puppet::config
       changes => [ "${vardir_action} vardir ${puppet::config::vardir}", ],
       require => File['puppet.conf'],
       notify  => Class['puppet::agent::service'],
-    } 
+    }
 
     if $puppet::config::real_ssldir {
       if $puppet::config::real_ssldir == 'default' {
@@ -94,7 +118,7 @@ class puppet::agent::config inherits puppet::config
       changes => [ "${rundir_action} rundir ${puppet::config::rundir}", ],
       require => File['puppet.conf'],
       notify  => Class['puppet::agent::service'],
-    } 
+    }
 
     if $puppet::config::classfile == 'default' {
       $classfile_action = 'rm'
@@ -106,7 +130,7 @@ class puppet::agent::config inherits puppet::config
       changes => [ "${classfile_action} classfile ${puppet::config::classfile}", ],
       require => File['puppet.conf'],
       notify  => Class['puppet::agent::service'],
-    } 
+    }
 
     if $puppet::config::localconfig == 'default' {
       $localconfig_action = 'rm'
@@ -118,13 +142,13 @@ class puppet::agent::config inherits puppet::config
       changes => [ "${localconfig_action} localconfig ${puppet::config::localconfig}", ],
       require => File['puppet.conf'],
       notify  => Class['puppet::agent::service'],
-    } 
+    }
 
     augeas {'agent.puppet.conf.agent.report':
       context => "/files${puppet::config::confdir}/puppet.conf/agent",
       changes => [ "set report true", ],
       require => File['puppet.conf'],
       notify  => Class['puppet::agent::service'],
-    } 
+    }
   }
 }
