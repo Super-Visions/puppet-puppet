@@ -23,6 +23,7 @@ class puppet::config (
   $environmentpath     = undef,
   $log_level           = 'default',
   $runinterval         = 'default',
+  $certname            = 'default',
 ) {
 
   # Code for fixing ssldir

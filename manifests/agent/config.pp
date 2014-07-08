@@ -144,6 +144,18 @@ class puppet::agent::config inherits puppet::config
       notify  => Class['puppet::agent::service'],
     }
 
+    if $puppet::config::certname == 'default' {
+      $certname_action = 'rm'
+    } else {
+      $certname_action = 'set'
+    }
+    augeas {'agent.puppet.conf.agent.certname':
+      context => "/files${puppet::config::confdir}/puppet.conf/agent",
+      changes => [ "${certname_action} certname ${puppet::config::certname}", ],
+      require => File['puppet.conf'],
+      notify  => Class['puppet::agent::service'],
+    }
+
     augeas {'agent.puppet.conf.agent.report':
       context => "/files${puppet::config::confdir}/puppet.conf/agent",
       changes => [ "set report true", ],
