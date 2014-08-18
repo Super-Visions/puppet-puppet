@@ -20,6 +20,13 @@ class puppet::agent::config inherits puppet::config
 
   } else {
 
+    if $osfamily == 'Solaris' {
+      user { 'puppet':
+        ensure   => present,
+        password => '*LK*'
+      }
+    }
+
     realize File['puppet.conf']
 
     if $puppet::config::server_fqdn == 'default' {
