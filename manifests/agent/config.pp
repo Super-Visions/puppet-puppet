@@ -20,7 +20,7 @@ class puppet::agent::config inherits puppet::config
 
   } else {
 
-    if $osfamily == 'Solaris' {
+    if $osfamily == 'Solaris' {:
       user { 'puppet':
         ensure   => present,
         password => '*LK*'
@@ -169,5 +169,30 @@ class puppet::agent::config inherits puppet::config
       require => File['puppet.conf'],
       notify  => Class['puppet::agent::service'],
     }
+
+    if $puppet::config::http_proxy_host {
+      $http_proxy_host_action = 'set'
+    } else {
+      $http_proxy_host_action = 'rm'
+    }
+    augeas {'agent.puppet.conf.agent.http_proxy_host':
+      context => "/files${puppet::config::confdir}/puppet.conf/agent",
+      changes => [ "$http_proxy_host_action http_proxy_host ${puppet::config::http_proxy_host}", ],
+      require => File['puppet.conf'],
+      notify  => Class['puppet::agent::service'],
+    }
+
+    if $puppet::config::http_proxy_port {
+      $http_proxy_port_action = 'set'
+    } else {
+      $http_proxy_port_action = 'rm'
+    }
+    augeas {'agent.puppet.conf.agent.http_proxy_port':
+      context => "/files${puppet::config::confdir}/puppet.conf/agent",
+      changes => [ "$http_proxy_port_action http_proxy_port ${puppet::config::http_proxy_port}", ],
+      require => File['puppet.conf'],
+      notify  => Class['puppet::agent::service'],
+    }
+
   }
 }

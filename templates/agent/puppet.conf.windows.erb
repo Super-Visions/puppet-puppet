@@ -44,3 +44,5 @@
 
     # reports
     <% if @report != 'default' %>report = <%= @report %><% end %>
+    <% if @http_proxy_host %>http_proxy_host = <%= @http_proxy_host %><% end %>
+    <% if @http_proxy_port %>http_proxy_port = <%= @http_proxy_port %><% end %>
