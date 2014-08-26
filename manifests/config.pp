@@ -24,6 +24,8 @@ class puppet::config (
   $log_level           = 'default',
   $runinterval         = 'default',
   $certname            = 'default',
+  $http_proxy_host     = undef,
+  $http_proxy_port     = undef,
 ) {
 
   # Code for fixing ssldir
