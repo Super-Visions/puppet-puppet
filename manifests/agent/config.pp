@@ -20,7 +20,7 @@ class puppet::agent::config inherits puppet::config
 
   } else {
 
-    if $osfamily == 'Solaris' {:
+    if $osfamily == 'Solaris' {
       user { 'puppet':
         ensure   => present,
         password => '*LK*'
